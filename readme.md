@@ -8,7 +8,7 @@
 [![Vcpkg Version](https://img.shields.io/vcpkg/v/TempDir)](https://vcpkg.link/ports/TempDir)
 
 
-**TempDir** is a lightweight C++17 library designed to provide an easy-to-use solution for managing temporary directories and files, particularly in unit testing scenarios (e.g., with [Catch2](https://github.com/catchorg/Catch2)). Inspired by JUnit's `@TempDir` annotation in the Java ecosystem, **TempDir** simplifies the creation, cleanup, and management of temporary directories in your C++ projects.
+**TempDir** is a lightweight C++17 library designed to provide an easy-to-use solution for managing temporary directories and files, particularly in unit testing scenarios (e.g., with [Catch2](https://github.com/catchorg/Catch2)). Inspired by JUnit's [`@TempDir`](https://junit.org/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/io/TempDir.html) annoation in the Java ecosystem, **TempDir** simplifies the creation, cleanup, and management of temporary directories in your C++ projects.
 
 The library is implemented as a **single-header file**, making integration easy and comes without additional dependencies. The project is licensed under the **MIT License**.
 
@@ -19,7 +19,7 @@ The library is implemented as a **single-header file**, making integration easy 
 - **Modern C++ support**: Written in C++17 for robust and efficient performance.
 
 ## Installation
-Simply copy the [`tempdir.hpp`](include/bw/tempdir/tempdir.hpp) file into your project and include it in your source files:
+Simply copy the [`tempdir.hpp`](https://github.com/bw-hro/TempDir/releases/latest/download/tempdir.hpp) file into your project and include it in your source files:
 
 ```cpp
 #include <bw/tempdir/tempdir.hpp>
