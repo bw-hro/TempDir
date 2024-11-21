@@ -1,7 +1,19 @@
 cmake_minimum_required(VERSION 3.1)
 cmake_policy(SET CMP0091 NEW)
 
-project(TempDir VERSION 1.0 DESCRIPTION "TempDir is a lightweight C++17 library designed to provide an easy-to-use solution for managing temporary directories and files," LANGUAGES CXX)
+message(STATUS "Read contents from vcpkg.json")
+file(READ "${CMAKE_SOURCE_DIR}/vcpkg.json" VCPKG_JSON_CONTENT)
+
+message(STATUS "Extract version from vcpkg.json")
+string(REGEX MATCH "\"version-string\"[ \t]*:[ \t]*\"([^\"]+)\"" VERSION_MATCH "${VCPKG_JSON_CONTENT}")
+if (VERSION_MATCH)
+    string(REGEX REPLACE "\"version-string\"[ \t]*:[ \t]*\"([^\"]+)\"" "\\1" TEMP_DIR_VERSION "${VERSION_MATCH}")
+    message(STATUS "Extracted version from vcpkg.json: ${TEMP_DIR_VERSION}")
+else()
+    message(FATAL_ERROR "Could not extract version from vcpkg.json")
+endif()
+
+project(TempDir VERSION ${TEMP_DIR_VERSION} DESCRIPTION "TempDir is a lightweight C++17 library designed to provide an easy-to-use solution for managing temporary directories and files," LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 
 if(WIN32)
