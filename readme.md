@@ -85,6 +85,7 @@ TEST_CASE("TempDir usage in unit tests")
 
     REQUIRE(fs::exists(test_file)); // File should be created.
 }
+// temp_dir out of scope, created temp directory will be removed
 ```
 
 
