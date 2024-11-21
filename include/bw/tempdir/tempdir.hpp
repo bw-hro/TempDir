@@ -9,6 +9,7 @@
 #include <functional>
 #include <iostream>
 #include <random>
+#include <string>
 
 namespace bw::tempdir
 {
@@ -34,7 +35,6 @@ class TempDirException : public std::runtime_error
 //  scope. Cleanup allows you to control how a TempDir is cleaned up.
 enum class Cleanup
 {
-
     always,     // Always clean up a temporary directory after TempDir goes out of scope.
     on_success, // Clean up a temporary directory after TempDir goes out of scope
                 // without uncaught exceptions.
