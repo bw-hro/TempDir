@@ -1,4 +1,4 @@
-# TempDir: Simplified Temporary Directory Management for C++  
+# TempDir: Simplified Temporary Directory for C++  
 
 **TempDir** is a lightweight C++17 library designed to provide an easy-to-use solution for managing temporary directories and files, particularly in unit testing scenarios (e.g., with [Catch2](https://github.com/catchorg/Catch2)). Inspired by JUnit's `@TempDir` annotation in the Java ecosystem, **TempDir** simplifies the creation, cleanup, and management of temporary directories in your C++ projects.
 
