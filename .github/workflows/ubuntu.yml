@@ -27,7 +27,7 @@ jobs:
       run: |
         chmod +x ./build.sh
         ./build.sh clean release
-        chmod +x ./build/examples/examples
+        chmod +x ./build/examples/example
         chmod +x ./build/test/tests
 
     - name: Upload binaries
