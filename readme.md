@@ -1,9 +1,9 @@
 # TempDir: Simplified Temporary Directory for C++
 
-[![CI Ubuntu](https://github.com/bw-hro/TempDir/actions/workflows/ubuntu.yml/badge.svg?branch=master)](https://github.com/bw-hro/TempDir/actions/workflows/ubuntu.yml)
-[![CI Windows](https://github.com/bw-hro/TempDir/actions/workflows/windows.yml/badge.svg?branch=master)](https://github.com/bw-hro/TempDir/actions/workflows/windows.yml)
-[![CI macOS](https://github.com/bw-hro/TempDir/actions/workflows/macos.yml/badge.svg?branch=master)](https://github.com/bw-hro/TempDir/actions/workflows/macos.yml)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/bw-hro/TempDir/master/LICENSE.txt)
+[![CI Ubuntu](https://github.com/bw-hro/TempDir/actions/workflows/ubuntu.yml/badge.svg?branch=main)](https://github.com/bw-hro/TempDir/actions/workflows/ubuntu.yml)
+[![CI Windows](https://github.com/bw-hro/TempDir/actions/workflows/windows.yml/badge.svg?branch=main)](https://github.com/bw-hro/TempDir/actions/workflows/windows.yml)
+[![CI macOS](https://github.com/bw-hro/TempDir/actions/workflows/macos.yml/badge.svg?branch=main)](https://github.com/bw-hro/TempDir/actions/workflows/macos.yml)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/bw-hro/TempDir/main/LICENSE.txt)
 [![GitHub Releases](https://img.shields.io/github/release/bw-hro/TempDir.svg)](https://github.com/bw-hro/TempDir/releases)
 [![Vcpkg Version](https://img.shields.io/vcpkg/v/TempDir)](https://vcpkg.link/ports/TempDir)
 
