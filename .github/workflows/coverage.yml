@@ -9,6 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Setup vcpkg
+      run: |
+        python ./tools/install-vcpkg.py
+        
     - name: Setup lcov
       uses: hrishikesh-kadam/setup-lcov@v1
 
