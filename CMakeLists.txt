@@ -32,6 +32,9 @@ if(TD_BUILD_TESTS)
     add_subdirectory(test)
 endif()
 
+option(TD_ENABLE_COVERAGE "Enable coverage reporting" OFF)
+message("TD_ENABLE_COVERAGE: ${TD_ENABLE_COVERAGE}")
+
 add_library(tempdir INTERFACE)
 target_include_directories(tempdir INTERFACE
     $<BUILD_INTERFACE:"${CMAKE_CURRENT_SOURCE_DIR}/include}"> 
