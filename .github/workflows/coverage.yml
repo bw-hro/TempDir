@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+    - name: Checkout code
+      uses: actions/checkout@v4
+
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
@@ -20,9 +23,6 @@ jobs:
         
     - name: Setup lcov
       uses: hrishikesh-kadam/setup-lcov@v1
-
-    - name: Checkout code
-      uses: actions/checkout@v4
 
     - name: Generate lcov input
       run: |
