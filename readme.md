@@ -1,14 +1,14 @@
 # TempDir: Simplified Temporary Directory for C++
 
-[![CI Ubuntu](https://github.com/bw-hro/TempDir/actions/workflows/ubuntu.yml/badge.svg?branch=master)](https://github.com/bw-hro/TempDir/actions/workflows/ubuntu.yml)
-[![CI Windows](https://github.com/bw-hro/TempDir/actions/workflows/windows.yml/badge.svg?branch=master)](https://github.com/bw-hro/TempDir/actions/workflows/windows.yml)
-[![CI macOS](https://github.com/bw-hro/TempDir/actions/workflows/macos.yml/badge.svg?branch=master)](https://github.com/bw-hro/TempDir/actions/workflows/macos.yml)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/bw-hro/TempDir/master/LICENSE.txt)
+[![CI Ubuntu](https://github.com/bw-hro/TempDir/actions/workflows/ubuntu.yml/badge.svg?branch=main)](https://github.com/bw-hro/TempDir/actions/workflows/ubuntu.yml)
+[![CI Windows](https://github.com/bw-hro/TempDir/actions/workflows/windows.yml/badge.svg?branch=main)](https://github.com/bw-hro/TempDir/actions/workflows/windows.yml)
+[![CI macOS](https://github.com/bw-hro/TempDir/actions/workflows/macos.yml/badge.svg?branch=main)](https://github.com/bw-hro/TempDir/actions/workflows/macos.yml)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/bw-hro/TempDir/main/LICENSE.txt)
 [![GitHub Releases](https://img.shields.io/github/release/bw-hro/TempDir.svg)](https://github.com/bw-hro/TempDir/releases)
 [![Vcpkg Version](https://img.shields.io/vcpkg/v/TempDir)](https://vcpkg.link/ports/TempDir)
 
 
-**TempDir** is a lightweight C++17 library designed to provide an easy-to-use solution for managing temporary directories and files, particularly in unit testing scenarios (e.g., with [Catch2](https://github.com/catchorg/Catch2)). Inspired by JUnit's `@TempDir` annotation in the Java ecosystem, **TempDir** simplifies the creation, cleanup, and management of temporary directories in your C++ projects.
+**TempDir** is a lightweight C++17 library designed to provide an easy-to-use solution for managing temporary directories and files, particularly in unit testing scenarios (e.g., with [Catch2](https://github.com/catchorg/Catch2)). Inspired by JUnit's [`@TempDir`](https://junit.org/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/io/TempDir.html) annoation in the Java ecosystem, **TempDir** simplifies the creation, cleanup, and management of temporary directories in your C++ projects.
 
 The library is implemented as a **single-header file**, making integration easy and comes without additional dependencies. The project is licensed under the **MIT License**.
 
@@ -19,7 +19,7 @@ The library is implemented as a **single-header file**, making integration easy 
 - **Modern C++ support**: Written in C++17 for robust and efficient performance.
 
 ## Installation
-Simply copy the [`tempdir.hpp`](include/bw/tempdir/tempdir.hpp) file into your project and include it in your source files:
+Simply copy the [`tempdir.hpp`](https://github.com/bw-hro/TempDir/releases/latest/download/tempdir.hpp) file into your project and include it in your source files:
 
 ```cpp
 #include <bw/tempdir/tempdir.hpp>
@@ -85,6 +85,7 @@ TEST_CASE("TempDir usage in unit tests")
 
     REQUIRE(fs::exists(test_file)); // File should be created.
 }
+// temp_dir out of scope, created temp directory will be removed
 ```
 
 
