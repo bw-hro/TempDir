@@ -17,6 +17,7 @@ jobs:
 
     - name: Generate lcov input
       run: |
+        chmod +x ./build.sh
         chmod +x ./coverage.sh
         ./coverage.sh
 
