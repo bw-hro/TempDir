@@ -220,20 +220,25 @@ TEST_CASE("Temporary directory will be deleted 'on_success' when leaving scope")
 TEST_CASE("TempDir allows to enable logging, which by default prints to std::cout")
 {
     fs::path temp_dir_path;
+    bool temp_dir_exists_in_scope = false;
 
-    std::stringstream output;
     // redirect std::cout to the stringstream
+    std::stringstream output;
     auto original_cout_buf = std::cout.rdbuf(output.rdbuf());
 
     { // scope that triggers destruction of temp_dir
         TempDir temp_dir(Config().enable_logging());
         temp_dir_path = temp_dir.path();
-        REQUIRE(fs::exists(temp_dir_path));
+        temp_dir_exists_in_scope = fs::exists(temp_dir_path);
     }
-    REQUIRE_FALSE(fs::exists(temp_dir_path));
 
     // restore the original std::cout buffer
+    std::cout.flush();
+    output.flush();
     std::cout.rdbuf(original_cout_buf);
+
+    REQUIRE(temp_dir_exists_in_scope);
+    REQUIRE_FALSE(fs::exists(temp_dir_path));
 
     std::vector<std::string> lines;
     std::string line;
@@ -242,6 +247,8 @@ TEST_CASE("TempDir allows to enable logging, which by default prints to std::cou
     {
         lines.push_back(line);
     }
+
+    REQUIRE(lines.size() == 2);
 
     REQUIRE(lines[0].find("TempDir create") != std::string::npos);
     REQUIRE(lines[0].find(temp_dir_path) != std::string::npos);
