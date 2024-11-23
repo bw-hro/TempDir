@@ -40,7 +40,8 @@ TEST_CASE("TempDir by default creates directory in OS temp directory")
 {
     TempDir temp_dir;
     REQUIRE(fs::exists(temp_dir.path()));
-    REQUIRE(temp_dir.path().parent_path() == fs::temp_directory_path());
+    REQUIRE(fs::canonical(temp_dir.path().parent_path()) ==
+            fs::canonical(fs::temp_directory_path()));
 }
 
 TEST_CASE("TempDirs root path is configurable")
@@ -74,6 +75,7 @@ TEST_CASE("TempDirs directory name prefix is configurable")
 
 TEST_CASE("TempDir throws exception when directory creation fails")
 {
+#ifndef _WIN32
     fs::path root_path = fs::temp_directory_path() / "some-sub-dir";
     ScopeGuard{root_path};
 
@@ -86,10 +88,15 @@ TEST_CASE("TempDir throws exception when directory creation fails")
     REQUIRE_THROWS_MATCHES(
         TempDir(root_path), TempDirException,
         MessageMatches(StartsWith("TempDirExcepton:") && ContainsSubstring("Permission denied")));
+#else
+    std::cout << "Test skipped on Windows. TODO: Handle directory permissions specific to Windows."
+              << std::endl;
+#endif
 }
 
 TEST_CASE("TempDir throws exception when directory cleanup fails")
 {
+#ifndef _WIN32
     fs::path root_path = fs::temp_directory_path() / "some-sub-dir";
     ScopeGuard{root_path};
 
@@ -103,10 +110,15 @@ TEST_CASE("TempDir throws exception when directory cleanup fails")
     REQUIRE_THROWS_MATCHES(
         temp_dir.cleanup(), TempDirException,
         MessageMatches(StartsWith("TempDirExcepton:") && ContainsSubstring("Permission denied")));
+#else
+    std::cout << "Test skipped on Windows. TODO: Handle directory permissions specific to Windows."
+              << std::endl;
+#endif
 }
 
 TEST_CASE("TempDir does not throw exception when cleanup in destructor fails")
 {
+#ifndef _WIN32
     fs::path root_path = fs::temp_directory_path() / "some-sub-dir";
     ScopeGuard{root_path};
     fs::path temp_dir_path;
@@ -122,6 +134,10 @@ TEST_CASE("TempDir does not throw exception when cleanup in destructor fails")
 
     // dir still exists despite temp_dir tried to clean up, but no exception was thrown
     REQUIRE(fs::is_directory(temp_dir_path));
+#else
+    std::cout << "Test skipped on Windows. TODO: Handle directory permissions specific to Windows."
+              << std::endl;
+#endif
 }
 
 TEST_CASE("Temporary directory will 'always' be deleted when leaving scope")
@@ -251,10 +267,10 @@ TEST_CASE("TempDir allows to enable logging, which by default prints to std::cou
     REQUIRE(lines.size() == 2);
 
     REQUIRE(lines[0].find("TempDir create") != std::string::npos);
-    REQUIRE(lines[0].find(temp_dir_path) != std::string::npos);
+    REQUIRE(lines[0].find(temp_dir_path.string()) != std::string::npos);
 
     REQUIRE(lines[1].find("TempDir remove") != std::string::npos);
-    REQUIRE(lines[1].find(temp_dir_path) != std::string::npos);
+    REQUIRE(lines[1].find(temp_dir_path.string()) != std::string::npos);
 }
 
 TEST_CASE("TempDir allows to enable custom logging")
@@ -270,8 +286,8 @@ TEST_CASE("TempDir allows to enable custom logging")
     REQUIRE_FALSE(fs::exists(temp_dir_path));
 
     REQUIRE(log[0].find("TempDir create") != std::string::npos);
-    REQUIRE(log[0].find(temp_dir_path) != std::string::npos);
+    REQUIRE(log[0].find(temp_dir_path.string()) != std::string::npos);
 
     REQUIRE(log[1].find("TempDir remove") != std::string::npos);
-    REQUIRE(log[1].find(temp_dir_path) != std::string::npos);
+    REQUIRE(log[1].find(temp_dir_path.string()) != std::string::npos);
 }
