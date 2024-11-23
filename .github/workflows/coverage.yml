@@ -5,6 +5,9 @@ permissions:
   contents: write
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
 
 jobs:
@@ -35,6 +38,7 @@ jobs:
         ./coverage.sh
 
     - name: Report code coverage
+      if: ${{ github.event_name == 'pull_request' }}
       uses: zgosalvez/github-actions-report-lcov@v3
       with:
         coverage-files: build/filtered_coverage.info
@@ -44,7 +48,8 @@ jobs:
         #working-directory: build/coverage_report
         update-comment: true
 
-    - name: Upload code coverage report 🚀
+    - name: Upload code coverage report
+      if: ${{ github.ref_name == 'main' && github.event_name == 'push' }}
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         folder: build/coverage_report
