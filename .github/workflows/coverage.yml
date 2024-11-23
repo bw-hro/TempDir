@@ -1,5 +1,8 @@
 name: Code Coverage
 
+permissions:
+  contents: write
+
 on:
   pull_request:
 
@@ -39,3 +42,11 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         #working-directory: build/coverage_report
         update-comment: true
+
+    - name: Upload code coverage report 🚀
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: build/coverage_report
+        target-folder: coverage-report
+        branch: gh-pages
+
