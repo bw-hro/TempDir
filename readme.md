@@ -3,10 +3,10 @@
 [![CI Ubuntu](https://github.com/bw-hro/TempDir/actions/workflows/ubuntu.yml/badge.svg?branch=main)](https://github.com/bw-hro/TempDir/actions/workflows/ubuntu.yml)
 [![CI Windows](https://github.com/bw-hro/TempDir/actions/workflows/windows.yml/badge.svg?branch=main)](https://github.com/bw-hro/TempDir/actions/workflows/windows.yml)
 [![CI macOS](https://github.com/bw-hro/TempDir/actions/workflows/macos.yml/badge.svg?branch=main)](https://github.com/bw-hro/TempDir/actions/workflows/macos.yml)
+[![code coverage](https://bw-hro.github.io/TempDir/coverage-report/badge.svg)](https://bw-hro.github.io/TempDir/coverage-report)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/bw-hro/TempDir/main/LICENSE.txt)
 [![GitHub Releases](https://img.shields.io/github/release/bw-hro/TempDir.svg)](https://github.com/bw-hro/TempDir/releases)
 [![Vcpkg Version](https://img.shields.io/vcpkg/v/TempDir)](https://vcpkg.link/ports/TempDir)
-
 
 **TempDir** is a lightweight C++17 library designed to provide an easy-to-use solution for managing temporary directories and files, particularly in unit testing scenarios (e.g., with [Catch2](https://github.com/catchorg/Catch2)). Inspired by JUnit's [`@TempDir`](https://junit.org/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/io/TempDir.html) annoation in the Java ecosystem, **TempDir** simplifies the creation, cleanup, and management of temporary directories in your C++ projects.
 

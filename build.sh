@@ -16,15 +16,18 @@ fi
 if [[ "${@#release}" = "$@" ]]
 then
     build_type="Debug"
+    code_coverage="ON"
 else
     build_type="Release"
+    code_coverage="OFF"
     rm -rf $build_dir
 fi
 echo "project build type: $build_type"
+echo "project code coverage: $code_coverage"
 
 vcpkg_file="vcpkg.json"
 
-cmake -B build -S . -D"CMAKE_BUILD_TYPE=$build_type" -D"CMAKE_TOOLCHAIN_FILE=$toolchain_file" -D"CMAKE_MAKE_PROGRAM:PATH=make" -D"CMAKE_CXX_COMPILER=g++"
+cmake -B build -S . -D"CMAKE_BUILD_TYPE=$build_type" -D"TD_ENABLE_COVERAGE=$code_coverage" -D"CMAKE_TOOLCHAIN_FILE=$toolchain_file" -D"CMAKE_MAKE_PROGRAM:PATH=make" -D"CMAKE_CXX_COMPILER=g++"
 cmake --build build --parallel $(nproc)
 
 ctest --test-dir build/test/
