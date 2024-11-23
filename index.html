@@ -1,1 +1,86 @@
-<h1>TempDir</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TempDir: Simplified Temporary Directory for C++</title>
+    <style>
+        body {
+            margin: 2rem 3rem 3rem;
+            max-width: 80ch;
+        }
+        header {
+            text-align: center;
+        }
+        h1 {
+            font-size: 1.6rem;
+        }
+        h2 {
+            font-size: 1.3em;
+        }
+        p, dt, dd {
+            line-height: 1.6rem;
+            font-size: 1.1rem;
+            max-width: 65ch;
+        }
+        dd {
+            margin-bottom: 1rem;
+        }
+        hr {
+            margin: 1.5rem 0;
+        }
+        pre {
+            background: lightgray;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <hr/> 
+
+    <header>
+        <h1>TempDir: Simplified Temporary Directory for C++</h1>
+        <p>Benno Waldhauer &mdash; Github: <a href="https://github.com/bw-hro/TempDir">https://github.com/bw-hro/TempDir</a></p>
+    </header>
+    <hr/> 
+    <p><i>TempDir</i> is a lightweight C++17 library designed to provide an easy-to-use solution for managing temporary directories and files, particularly in unit testing scenarios (e.g., with <a href="https://github.com/catchorg/Catch2">Catch2</a>).
+        Inspired by JUnit's <a href="https://junit.org/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/io/TempDir.html">@TempDir</a> annoation in the Java ecosystem, <i>TempDir</i> simplifies the creation, cleanup, and management of temporary directories in your C++ projects.</p>
+    <p>The library is implemented as a single-header file, making integration easy and comes without additional dependencies. The project is licensed under the MIT License.</p>
+    <h2>Features</h2>
+    <dl>
+        <dt><i>Automatic cleanup</i></dt>
+        <dd>Configurable cleanup policies to manage temporary directories' lifecycle.</dd>
+        
+        <dt><i>Easy integration</i></dt>
+        <dd>A single-header implementation that can be directly included in your project.</dd>
+        
+        <dt><i>Unit test focus</i></dt>
+        <dd>Perfect for use in testing frameworks like Catch2.</dd>
+        
+        <dt><i>Modern C++ support</i></dt>
+        <dd>Written in C++17 for robust and efficient performance.</dd>
+    </dl>
+    <h2>Example</h2>
+    <code><pre>
+#include <bw/tempdir/tempdir.hpp>
+#include <catch2/catch_all.hpp>
+#include <filesystem>
+#include <fstream>
+
+using namespace bw::tempdir;
+namespace fs = std::filesystem;
+
+TEST_CASE("TempDir usage in unit tests")
+{
+    TempDir temp_dir;
+
+    REQUIRE(fs::exists(temp_dir.path())); // Temp directory should exist.
+
+    auto test_file = temp_dir.path() / "test.txt";
+    std::ofstream(test_file) << "Unit test data";
+
+    REQUIRE(fs::exists(test_file)); // File should be created.
+}
+// temp_dir out of scope, created temp directory will be removed</pre></code>
+</body>
+</html>
