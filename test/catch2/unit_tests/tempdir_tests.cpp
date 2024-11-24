@@ -8,10 +8,33 @@
 using namespace bw::tempdir;
 namespace fs = std::filesystem;
 
+constexpr bool is_win32 =
+#ifdef _WIN32
+    true;
+#else
+    false;
+#endif
+
+void restrict_directory_modification(const fs::path& dir_path)
+{
+    if constexpr (is_win32)
+    {
+        std::string everyone_lang_independent = "*S-1-1-0";
+        std::string cmd = std::string("icacls ") + dir_path.string() + " /deny " +
+                          everyone_lang_independent + ":(OI)(CI)(DE,DC,WDAC,WD,AD)";
+        std::system(cmd.c_str());
+    }
+    else
+    {
+        fs::perms current_permissions = fs::status(dir_path).permissions();
+        fs::permissions(dir_path, current_permissions & ~fs::perms::owner_write);
+    }
+}
+
 // scope guard helper for clean up
 struct ScopeGuard
 {
-    fs::path path_to_clean;
+    fs::path dir_path;
 
     ScopeGuard(const ScopeGuard&) = delete;
     ScopeGuard& operator=(const ScopeGuard&) = delete;
@@ -19,10 +42,20 @@ struct ScopeGuard
 
     void cleanup()
     {
-        if (fs::exists(path_to_clean))
+        if (fs::exists(dir_path))
         {
-            fs::permissions(path_to_clean, fs::perms::all);
-            fs::remove_all(path_to_clean);
+            if constexpr (is_win32)
+            {
+                std::string everyone_lang_independent = "*S-1-1-0";
+                std::string cmd = std::string("icacls ") + dir_path.string() + " /remove:d " +
+                                  everyone_lang_independent;
+                std::system(cmd.c_str());
+            }
+            else
+            {
+                fs::permissions(dir_path, fs::perms::all);
+            }
+            fs::remove_all(dir_path);
         }
     };
 };
@@ -75,50 +108,34 @@ TEST_CASE("TempDirs directory name prefix is configurable")
 
 TEST_CASE("TempDir throws exception when directory creation fails")
 {
-#ifndef _WIN32
     fs::path root_path = fs::temp_directory_path() / "some-sub-dir";
     ScopeGuard{root_path};
 
     fs::create_directory(root_path);
-
-    fs::perms current_permissions = fs::status(root_path).permissions();
-    fs::permissions(root_path, current_permissions & ~fs::perms::owner_write);
+    restrict_directory_modification(root_path);
 
     using namespace Catch::Matchers;
-    REQUIRE_THROWS_MATCHES(
-        TempDir(root_path), TempDirException,
-        MessageMatches(StartsWith("TempDirExcepton:") && ContainsSubstring("Permission denied")));
-#else
-    std::cout << "Test skipped on Windows. TODO: Handle directory permissions specific to Windows."
-              << std::endl;
-#endif
+    REQUIRE_THROWS_MATCHES(TempDir(root_path), TempDirException,
+                           MessageMatches(StartsWith("TempDirExcepton:")));
 }
 
 TEST_CASE("TempDir throws exception when directory cleanup fails")
 {
-#ifndef _WIN32
     fs::path root_path = fs::temp_directory_path() / "some-sub-dir";
     ScopeGuard{root_path};
 
     TempDir temp_dir(root_path);
     REQUIRE(fs::is_directory(temp_dir.path()));
 
-    fs::perms current_permissions = fs::status(root_path).permissions();
-    fs::permissions(root_path, current_permissions & ~fs::perms::owner_write);
+    restrict_directory_modification(root_path);
 
     using namespace Catch::Matchers;
-    REQUIRE_THROWS_MATCHES(
-        temp_dir.cleanup(), TempDirException,
-        MessageMatches(StartsWith("TempDirExcepton:") && ContainsSubstring("Permission denied")));
-#else
-    std::cout << "Test skipped on Windows. TODO: Handle directory permissions specific to Windows."
-              << std::endl;
-#endif
+    REQUIRE_THROWS_MATCHES(temp_dir.cleanup(), TempDirException,
+                           MessageMatches(StartsWith("TempDirExcepton:")));
 }
 
 TEST_CASE("TempDir does not throw exception when cleanup in destructor fails")
 {
-#ifndef _WIN32
     fs::path root_path = fs::temp_directory_path() / "some-sub-dir";
     ScopeGuard{root_path};
     fs::path temp_dir_path;
@@ -128,16 +145,11 @@ TEST_CASE("TempDir does not throw exception when cleanup in destructor fails")
         temp_dir_path = temp_dir.path();
         REQUIRE(fs::is_directory(temp_dir_path));
 
-        fs::perms current_permissions = fs::status(root_path).permissions();
-        fs::permissions(root_path, current_permissions & ~fs::perms::owner_write);
+        restrict_directory_modification(root_path);
     }
 
     // dir still exists despite temp_dir tried to clean up, but no exception was thrown
     REQUIRE(fs::is_directory(temp_dir_path));
-#else
-    std::cout << "Test skipped on Windows. TODO: Handle directory permissions specific to Windows."
-              << std::endl;
-#endif
 }
 
 TEST_CASE("Temporary directory will 'always' be deleted when leaving scope")
