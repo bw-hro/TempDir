@@ -34,8 +34,7 @@ void restrict_directory_modification(const fs::path& dir_path)
 // scope guard helper for clean up
 struct ScopeGuard
 {
-    fs::path dir_path;
-
+    ScopeGuard(const fs::path& dir_path) : dir_path(dir_path) {};
     ScopeGuard(const ScopeGuard&) = delete;
     ScopeGuard& operator=(const ScopeGuard&) = delete;
     ~ScopeGuard() { cleanup(); }
@@ -58,6 +57,8 @@ struct ScopeGuard
             fs::remove_all(dir_path);
         }
     };
+
+    fs::path dir_path;
 };
 
 TEST_CASE("TempDir can be moved but not copied")
@@ -80,7 +81,7 @@ TEST_CASE("TempDir by default creates directory in OS temp directory")
 TEST_CASE("TempDirs root path is configurable")
 {
     fs::path root_path = fs::temp_directory_path() / "my-custom-root";
-    ScopeGuard{root_path};
+    ScopeGuard sg{root_path};
 
     TempDir temp_dir_1(root_path);
     REQUIRE(fs::exists(temp_dir_1.path()));
@@ -109,7 +110,7 @@ TEST_CASE("TempDirs directory name prefix is configurable")
 TEST_CASE("TempDir throws exception when directory creation fails")
 {
     fs::path root_path = fs::temp_directory_path() / "some-sub-dir";
-    ScopeGuard{root_path};
+    ScopeGuard sg{root_path};
 
     fs::create_directory(root_path);
     restrict_directory_modification(root_path);
@@ -122,7 +123,7 @@ TEST_CASE("TempDir throws exception when directory creation fails")
 TEST_CASE("TempDir throws exception when directory cleanup fails")
 {
     fs::path root_path = fs::temp_directory_path() / "some-sub-dir";
-    ScopeGuard{root_path};
+    ScopeGuard sg{root_path};
 
     TempDir temp_dir(root_path);
     REQUIRE(fs::is_directory(temp_dir.path()));
@@ -137,7 +138,7 @@ TEST_CASE("TempDir throws exception when directory cleanup fails")
 TEST_CASE("TempDir does not throw exception when cleanup in destructor fails")
 {
     fs::path root_path = fs::temp_directory_path() / "some-sub-dir";
-    ScopeGuard{root_path};
+    ScopeGuard sg{root_path};
     fs::path temp_dir_path;
 
     { // scope that trigger destruction of temp_dir
@@ -157,9 +158,11 @@ TEST_CASE("Temporary directory will 'always' be deleted when leaving scope")
     SECTION("Leave scope without exception")
     {
         fs::path temp_dir_path;
+        std::unique_ptr<ScopeGuard> sg;
         {
             TempDir temp_dir(Cleanup::always);
             temp_dir_path = temp_dir.path();
+            sg = std::make_unique<ScopeGuard>(temp_dir_path);
             REQUIRE(fs::is_directory(temp_dir_path));
         }
         REQUIRE_FALSE(fs::is_directory(temp_dir_path));
@@ -169,10 +172,12 @@ TEST_CASE("Temporary directory will 'always' be deleted when leaving scope")
     SECTION("Leave scope with exception")
     {
         fs::path temp_dir_path;
+        std::unique_ptr<ScopeGuard> sg;
         try
         {
             TempDir temp_dir(Cleanup::always);
             temp_dir_path = temp_dir.path();
+            sg = std::make_unique<ScopeGuard>(temp_dir_path);
             REQUIRE(fs::is_directory(temp_dir_path));
             throw std::runtime_error("some-expected-test-error");
         }
@@ -189,9 +194,11 @@ TEST_CASE("Temporary directory will 'never' be deleted when leaving scope")
     SECTION("Leave scope without exception")
     {
         fs::path temp_dir_path;
+        std::unique_ptr<ScopeGuard> sg;
         {
             TempDir temp_dir(Cleanup::never);
             temp_dir_path = temp_dir.path();
+            sg = std::make_unique<ScopeGuard>(temp_dir_path);
             REQUIRE(fs::is_directory(temp_dir_path));
         }
         REQUIRE(fs::is_directory(temp_dir_path));
@@ -200,10 +207,12 @@ TEST_CASE("Temporary directory will 'never' be deleted when leaving scope")
     SECTION("Leave scope with exception")
     {
         fs::path temp_dir_path;
+        std::unique_ptr<ScopeGuard> sg;
         try
         {
             TempDir temp_dir(Cleanup::never);
             temp_dir_path = temp_dir.path();
+            sg = std::make_unique<ScopeGuard>(temp_dir_path);
             REQUIRE(fs::is_directory(temp_dir_path));
             throw std::runtime_error("some-expected-test-error");
         }
@@ -219,9 +228,11 @@ TEST_CASE("Temporary directory will be deleted 'on_success' when leaving scope")
     SECTION("Leave scope without exception")
     {
         fs::path temp_dir_path;
+        std::unique_ptr<ScopeGuard> sg;
         {
             TempDir temp_dir(Cleanup::on_success);
             temp_dir_path = temp_dir.path();
+            sg = std::make_unique<ScopeGuard>(temp_dir_path);
             REQUIRE(fs::is_directory(temp_dir_path));
         }
         REQUIRE_FALSE(fs::is_directory(temp_dir_path));
@@ -231,10 +242,12 @@ TEST_CASE("Temporary directory will be deleted 'on_success' when leaving scope")
     SECTION("Leave scope with exception")
     {
         fs::path temp_dir_path;
+        std::unique_ptr<ScopeGuard> sg;
         try
         {
             TempDir temp_dir(Cleanup::on_success);
             temp_dir_path = temp_dir.path();
+            sg = std::make_unique<ScopeGuard>(temp_dir_path);
             REQUIRE(fs::is_directory(temp_dir_path));
             throw std::runtime_error("some-expected-test-error");
         }
