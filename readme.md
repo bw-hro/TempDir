@@ -35,7 +35,7 @@ or add dependency to *vpkg.json* manifest file
 ```json
 {
   "name": "your-project",
-  "version-string": "1.0.0",
+  "version-string": "1.0.1",
   "dependencies": [
     "bw-tempdir",
     ...

@@ -15,7 +15,8 @@ namespace bw::tempdir
 {
 namespace fs = std::filesystem;
 
-void log(const std::string& message) { std::cout << message << std::endl; }
+// Default log implementation used by Config struct
+inline void log(const std::string& message) { std::cout << message << std::endl; }
 
 // Exception class for errors related to TempDir operations.
 // E.g. for issues encountered during the creation, usage, or deletion of temporary directories.

@@ -1,6 +1,6 @@
 {
   "name": "tempdir",
-  "version-string": "1.0.0",
+  "version-string": "1.0.1",
   "builtin-baseline": "c82f74667287d3dc386bce81e44964370c91a289",
   "dependencies": [
     "catch2"
