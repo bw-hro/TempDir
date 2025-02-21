@@ -4,7 +4,7 @@
 [![CI Windows](https://github.com/bw-hro/TempDir/actions/workflows/windows.yml/badge.svg?branch=main)](https://github.com/bw-hro/TempDir/actions/workflows/windows.yml)
 [![CI macOS](https://github.com/bw-hro/TempDir/actions/workflows/macos.yml/badge.svg?branch=main)](https://github.com/bw-hro/TempDir/actions/workflows/macos.yml)
 [![code coverage](https://bw-hro.github.io/TempDir/coverage-report/badge.svg)](https://bw-hro.github.io/TempDir/coverage-report)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/bw-hro/TempDir/main/LICENSE.txt)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/bw-hro/TempDir/main/LICENSE)
 [![GitHub Releases](https://img.shields.io/github/release/bw-hro/TempDir.svg)](https://github.com/bw-hro/TempDir/releases)
 [![Vcpkg Version](https://img.shields.io/vcpkg/v/bw-tempdir)](https://vcpkg.link/ports/bw-tempdir)
 
@@ -136,7 +136,7 @@ TempDir temp_dir(Config().enable_logging([](auto& msg) {
 ```
 
 ## License
-**TempDir** is licensed under the MIT License. See [LICENSE](LICENSE.txt) for details.
+**TempDir** is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## Contributing
 Contributions are welcome! If you encounter a bug, have a feature request, or would like to contribute code, feel free to open an issue or submit a pull request.
