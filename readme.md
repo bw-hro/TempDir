@@ -109,7 +109,7 @@ TEST_CASE("TempDir usage in unit tests")
 
 ## Cleanup Policies
 The `TempDir` class offers configurable cleanup policies:
-- **`Cleanup::always`**: Always clean up the directory when `TempDir` goes out of scope.
+- **`Cleanup::always`**: Always clean up the directory when `TempDir` goes out of scope. This is the default policy.
 - **`Cleanup::on_success`**: Clean up only if no exceptions were thrown.
 - **`Cleanup::never`**: Keep the directory and its contents.
 
