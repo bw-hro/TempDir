@@ -39,7 +39,7 @@ jobs:
 
     - name: Report code coverage
       if: ${{ github.event_name == 'pull_request' }}
-      uses: zgosalvez/github-actions-report-lcov@v3
+      uses: zgosalvez/github-actions-report-lcov@v4
       with:
         coverage-files: build/filtered_coverage.info
         minimum-coverage: 90
