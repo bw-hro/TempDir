@@ -36,5 +36,5 @@ set "vcpkg_file=vcpkg.json"
 cmake -B "%build_dir%" -S . -DCMAKE_BUILD_TYPE=%build_type% -DCMAKE_TOOLCHAIN_FILE="%toolchain_file%" -DVCPKG_TARGET_TRIPLET="%vcpkg_triplet%" -G "Visual Studio 18 2026" -A "%build_arch%"
 cmake --build "%build_dir%" --config "%build_type%" --parallel %NUMBER_OF_PROCESSORS%
 
-ctest --test-dir "%build_dir%\test\"
-ctest --test-dir "%build_dir%\examples\"
+ctest --test-dir "%build_dir%\test"
+ctest --test-dir "%build_dir%\examples"
